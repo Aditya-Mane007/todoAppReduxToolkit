@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Modal from "./Modal"
 import { closeModal } from "../../features/modalSlice"
 import { addTodo, updateTodo } from "../../features/todoSlice"
+import { toast } from "react-toastify"
 
 const OPTIONS = [
   { key: "false", value: "Active" },
@@ -39,6 +40,7 @@ function UpdateTodoModal() {
     dispatch(closeModal())
     setTodoText("")
     setSelectedValue("")
+    toast.success("Todo Updated Successfully")
   }
 
   useEffect(() => {

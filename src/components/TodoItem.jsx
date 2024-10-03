@@ -3,6 +3,7 @@ import { MdOutlineDelete } from "react-icons/md"
 import { removeTodo, setUpdatingId, completeTodo } from "../features/todoSlice"
 import { useDispatch } from "react-redux"
 import { displayModal } from "../features/modalSlice"
+import { toast } from "react-toastify"
 
 function TodoItem({ todo }) {
   const dispatch = useDispatch()
@@ -15,7 +16,10 @@ function TodoItem({ todo }) {
             name="completed"
             id="completd"
             checked={todo.completed === "completed"}
-            onChange={() => dispatch(completeTodo(todo._id))}
+            onChange={() => {
+              dispatch(completeTodo(todo._id))
+              toast.success("Todo Updated Successfully")
+            }}
           />
           <div>
             <div
@@ -46,7 +50,10 @@ function TodoItem({ todo }) {
           </button>
           <button
             className="deleteTodo"
-            onClick={() => dispatch(removeTodo(todo._id))}
+            onClick={() => {
+              dispatch(removeTodo(todo._id)),
+                toast.success("Todo deletd Successfully")
+            }}
           >
             <MdOutlineDelete />
           </button>

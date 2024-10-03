@@ -3,6 +3,7 @@ import Modal from "./Modal"
 import { closeModal } from "../../features/modalSlice"
 import { useState } from "react"
 import { addTodo } from "../../features/todoSlice"
+import { toast } from "react-toastify"
 
 let id = 0
 function AddTodoModal() {
@@ -34,6 +35,7 @@ function AddTodoModal() {
     dispatch(closeModal())
     setTodoText("")
     setSelectedValue("")
+    toast.success("Todo Added Successfully")
   }
   return (
     <Modal open={openModal === "addTodo"}>
