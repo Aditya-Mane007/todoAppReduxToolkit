@@ -1,16 +1,21 @@
+import { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Modal from "./Modal"
 import { closeModal } from "../../features/modalSlice"
-import { useState } from "react"
-import { addTodo } from "../../features/todoSlice"
+import { addTodo, updateTodo } from "../../features/todoSlice"
 
-let id = 0
-function AddTodoModal() {
-  const { openModal } = useSelector((state) => state.modal)
+const OPTIONS = [
+  { key: "false", value: "Active" },
+  { key: "true", value: "Completed" },
+]
+
+function UpdateTodoModal() {
   const dispatch = useDispatch()
-  const [todoText, setTodoText] = useState("")
+  const { openModal } = useSelector((state) => state.modal)
+  const { todos, updatingTodo } = useSelector((state) => state.todo)
 
-  const [selectedValue, setSelectedValue] = useState("active")
+  const [todoText, setTodoText] = useState("")
+  const [selectedValue, setSelectedValue] = useState("")
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value)
@@ -24,19 +29,26 @@ function AddTodoModal() {
       d.getMonth() + 1
     }/${d.getFullYear()}`
     const todo = {
-      _id: id,
+      _id: updatingTodo[0]._id,
       todo: todoText,
       completed: selectedValue,
       date: date,
     }
-    id++
-    dispatch(addTodo(todo))
+
+    dispatch(updateTodo(todo))
     dispatch(closeModal())
     setTodoText("")
     setSelectedValue("")
   }
+
+  useEffect(() => {
+    if (updatingTodo.length > 0) {
+      setTodoText(updatingTodo[0].todo)
+      setSelectedValue(updatingTodo[0].completed)
+    }
+  }, [updatingTodo])
   return (
-    <Modal open={openModal === "addTodo"}>
+    <Modal open={openModal === "updateTodo"}>
       <div className="addTodoForm">
         <form method="dialog" onSubmit={submitHandler}>
           <div className="form-input">
@@ -62,16 +74,18 @@ function AddTodoModal() {
               <option value="" disabled selected>
                 Select Status
               </option>
+
               <option value="active">Active</option>
               <option value="completed">Completed</option>
             </select>
           </div>
+
           <button type="submit" style={{ margin: "0.5rem 0.5rem 0 0" }}>
-            Submit
+            Update Todo
           </button>
           <button
             onClick={() => {
-              dispatch(closeModal())
+              dispatch(closeModal)
             }}
           >
             cancel
@@ -82,4 +96,4 @@ function AddTodoModal() {
   )
 }
 
-export default AddTodoModal
+export default UpdateTodoModal

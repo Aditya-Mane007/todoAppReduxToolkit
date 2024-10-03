@@ -1,8 +1,16 @@
-import { useDispatch } from "react-redux";
-import { displayModal } from "../features/modalSlice";
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { displayModal } from "../features/modalSlice"
+import { setFilter } from "../features/todoSlice"
 
 function ButtonSection() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const [selectedValue, setSelectedValue] = useState("all")
+
+  const handleChange = (e) => {
+    setSelectedValue(e.target.value)
+    dispatch(setFilter(e.target.value))
+  }
 
   return (
     <div className="btnSection">
@@ -12,17 +20,21 @@ function ButtonSection() {
       >
         Add Task
       </button>
-      <button className="filterBtn">
-        <select name="todos" id="todos">
-          <option value="all" defaultChecked>
-            All
-          </option>
-          <option value="active">Active</option>
-          <option value="completed">Completed</option>
-        </select>
-      </button>
+      <select
+        name="todos"
+        id="todos"
+        className="filterBtn"
+        value={selectedValue}
+        onChange={handleChange}
+      >
+        <option value="all" defaultChecked>
+          All
+        </option>
+        <option value="active">Active</option>
+        <option value="completed">Completed</option>
+      </select>
     </div>
-  );
+  )
 }
 
-export default ButtonSection;
+export default ButtonSection
