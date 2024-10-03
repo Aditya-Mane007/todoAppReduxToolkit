@@ -18,7 +18,7 @@ function TodoItem({ todo }) {
             checked={todo.completed === "completed"}
             onChange={() => {
               dispatch(completeTodo(todo._id))
-              toast.success("Todo Updated Successfully")
+              toast.success("Todo Completed Successfully")
             }}
           />
           <div>
